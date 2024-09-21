@@ -12,10 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutLink = document.getElementById('logout');
     const loadingBar = document.getElementById('loadingBar');
 
-    let posts = []; // Für Reels
-    let communityPosts = []; // Für Community Posts
+    let posts = JSON.parse(localStorage.getItem('posts')) || [];
+    let communityPosts = JSON.parse(localStorage.getItem('communityPosts')) || [];
 
-    // Login
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const username = document.getElementById('loginUsername').value;
@@ -30,7 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
         logoutLink.style.display = 'block';
     });
 
-    // Logout
     logoutLink.addEventListener('click', () => {
         localStorage.removeItem('username');
         localStorage.removeItem('password');
@@ -39,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
         logoutLink.style.display = 'none';
     });
 
-    // Tab-Navigation
     document.getElementById('uploadTab').addEventListener('click', () => {
         uploadSection.style.display = 'block';
         reelsSection.style.display = 'none';
@@ -60,16 +57,15 @@ document.addEventListener('DOMContentLoaded', () => {
         displayCommunityPosts();
     });
 
-    // Handle Posten
     postForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
         const content = postContent.value.trim();
         const mediaFile = mediaInput.files[0];
 
-        loadingBar.style.display = 'block'; // Ladeanzeige zeigen
+        loadingBar.style.display = 'block';
 
-        setTimeout(() => { // Simuliere Upload-Verzögerung
+        setTimeout(() => {
             const post = { content, mediaURL: null, type: null };
 
             if (mediaFile) {
@@ -77,29 +73,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 post.type = mediaFile.type;
             }
 
-            // Speichern in den entsprechenden Arrays
             if (post.type === "video/mp4") {
                 posts.push(post);
+                localStorage.setItem('posts', JSON.stringify(posts));
             } else if (post.type === "audio/mp3" || content) {
                 communityPosts.push(post);
+                localStorage.setItem('communityPosts', JSON.stringify(communityPosts));
             }
 
-            // Eingabefelder leeren
             postContent.value = '';
             mediaInput.value = '';
-            loadingBar.style.display = 'none'; // Ladeanzeige verstecken
+            loadingBar.style.display = 'none';
 
-            // Zeige die entsprechenden Posts
             if (post.type === "video/mp4") {
                 displayReels();
             } else if (post.type === "audio/mp3" || content) {
                 displayCommunityPosts();
             }
-        }, 2000); // Simulierte Upload-Zeit (2 Sekunden)
+        }, 2000);
     });
 
     function displayReels() {
-        postList.innerHTML = ''; // Alte Posts löschen
+        postList.innerHTML = '';
         posts.forEach(post => {
             const newPost = document.createElement('div');
             newPost.classList.add('post');
@@ -116,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function displayCommunityPosts() {
-        communityList.innerHTML = ''; // Alte Community Posts löschen
+        communityList.innerHTML = '';
         communityPosts.forEach(post => {
             const newPost = document.createElement('div');
             newPost.classList.add('post');
