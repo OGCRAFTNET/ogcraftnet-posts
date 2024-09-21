@@ -12,8 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutLink = document.getElementById('logout');
     const loadingBar = document.getElementById('loadingBar');
 
-    let posts = JSON.parse(localStorage.getItem('posts')) || [];
-    let communityPosts = JSON.parse(localStorage.getItem('communityPosts')) || [];
+    // Posts aus localStorage laden
+    let posts = JSON.parse(localStorage.getItem('posts')) || []; // Reels (Videos)
+    let communityPosts = JSON.parse(localStorage.getItem('communityPosts')) || []; // Community Posts (Texte und Audios)
 
     // Login
     loginForm.addEventListener('submit', (e) => {
@@ -67,9 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const content = postContent.value.trim();
         const mediaFile = mediaInput.files[0];
 
-        loadingBar.style.display = 'block';
+        loadingBar.style.display = 'block'; // Ladeanzeige zeigen
 
-        setTimeout(() => {
+        setTimeout(() => { // Simuliere Upload-Verzögerung
             const post = { content, mediaURL: null, type: null };
 
             if (mediaFile) {
@@ -77,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 post.type = mediaFile.type;
             }
 
+            // Speichern in den entsprechenden Arrays
             if (post.type === "video/mp4") {
                 posts.push(post);
                 localStorage.setItem('posts', JSON.stringify(posts));
@@ -85,79 +87,70 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('communityPosts', JSON.stringify(communityPosts));
             }
 
+            // Eingabefelder leeren
             postContent.value = '';
             mediaInput.value = '';
-            loadingBar.style.display = 'none';
+            loadingBar.style.display = 'none'; // Ladeanzeige verstecken
 
+            // Zeige die entsprechenden Posts
             if (post.type === "video/mp4") {
                 displayReels();
             } else if (post.type === "audio/mp3" || content) {
                 displayCommunityPosts();
             }
-        }, 2000);
+        }, 2000); // Simulierte Upload-Zeit (2 Sekunden)
     });
 
     function displayReels() {
-        postList.innerHTML = '';
+        postList.innerHTML = ''; // Alte Posts löschen
         posts.forEach((post, index) => {
             const newPost = document.createElement('div');
             newPost.classList.add('post');
             newPost.innerHTML = `
-                <p><strong>${localStorage.getItem('username')}</strong></p>
                 <video controls>
-                    <source src="${post.mediaURL}" type="video/mp4">
+                    <source src="${post.mediaURL}" type="${post.type}">
                     Dein Browser unterstützt das Video-Tag nicht.
                 </video>
                 <p>${post.content}</p>
-                <button class="delete-button" data-index="${index}">Löschen</button>
+                <button class="delete-button" onclick="deletePost(${index}, 'reels')">Löschen</button>
             `;
             postList.appendChild(newPost);
         });
-        attachDeleteListeners();
     }
 
     function displayCommunityPosts() {
-        communityList.innerHTML = '';
+        communityList.innerHTML = ''; // Alte Community Posts löschen
         communityPosts.forEach((post, index) => {
             const newPost = document.createElement('div');
             newPost.classList.add('post');
             if (post.mediaURL) {
                 newPost.innerHTML = `
-                    <p><strong>${localStorage.getItem('username')}</strong></p>
                     <audio controls>
-                        <source src="${post.mediaURL}" type="audio/mp3">
+                        <source src="${post.mediaURL}" type="${post.type}">
                         Dein Browser unterstützt das Audio-Tag nicht.
                     </audio>
                     <p>${post.content}</p>
-                    <button class="delete-button" data-index="${index}">Löschen</button>
+                    <button class="delete-button" onclick="deletePost(${index}, 'community')">Löschen</button>
                 `;
             } else {
                 newPost.innerHTML = `
-                    <p><strong>${localStorage.getItem('username')}</strong></p>
                     <p>${post.content}</p>
-                    <button class="delete-button" data-index="${index}">Löschen</button>
+                    <button class="delete-button" onclick="deletePost(${index}, 'community')">Löschen</button>
                 `;
             }
             communityList.appendChild(newPost);
         });
-        attachDeleteListeners();
     }
 
-    function attachDeleteListeners() {
-        const deleteButtons = document.querySelectorAll('.delete-button');
-        deleteButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                const index = e.target.getAttribute('data-index');
-                if (postList.contains(e.target.parentElement)) {
-                    posts.splice(index, 1);
-                    localStorage.setItem('posts', JSON.stringify(posts));
-                    displayReels();
-                } else {
-                    communityPosts.splice(index, 1);
-                    localStorage.setItem('communityPosts', JSON.stringify(communityPosts));
-                    displayCommunityPosts();
-                }
-            });
-        });
-    }
+    window.deletePost = function(index, type) {
+        if (type === 'reels') {
+            posts.splice(index, 1);
+            localStorage.setItem('posts', JSON.stringify(posts));
+            displayReels();
+        } else if (type === 'community') {
+            communityPosts.splice(index, 1);
+            localStorage.setItem('communityPosts', JSON.stringify(communityPosts));
+            displayCommunityPosts();
+        }
+    };
 });
