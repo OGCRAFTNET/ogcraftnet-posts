@@ -6,83 +6,76 @@
 
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #181818;
+    background-color: #1e1e1e;
     color: #fff;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-nav {
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    backdrop-filter: blur(10px);
+header {
+    background-color: #292929;
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
 .logo {
     font-size: 2rem;
+    font-weight: bold;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
 }
 
 .nav-links a {
     text-decoration: none;
-    color: #fff;
+    color: #ffcc00;
     font-weight: bold;
-    margin-left: 20px; /* Abstand zwischen den Links */
+    transition: color 0.3s;
 }
 
-.tabs {
-    display: flex;
-    justify-content: center;
-    margin: 1rem 0;
+.nav-links a:hover {
+    color: #e6b800;
 }
 
-.tab {
-    background-color: #ffcc00;
-    border: none;
-    border-radius: 50px;
-    padding: 0.5rem 2rem;
-    margin: 0 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.tab:hover {
-    background-color: #e6b800;
-}
-
-.content {
-    margin: 2rem;
+main {
+    flex: 1;
     padding: 2rem;
+}
+
+.form-section {
     background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
+    border-radius: 10px;
+    padding: 2rem;
+    margin-bottom: 2rem;
     backdrop-filter: blur(5px);
 }
 
 h2 {
+    margin-bottom: 1rem;
     color: #ffcc00;
 }
 
-.post-list, .community-list {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-input[type="file"], textarea {
+input[type="text"], 
+input[type="password"], 
+textarea, 
+input[type="file"] {
     width: 100%;
-    margin-bottom: 1rem;
     padding: 0.5rem;
-    border-radius: 10px;
+    margin-bottom: 1rem;
+    border-radius: 5px;
     border: none;
     background-color: rgba(255, 255, 255, 0.2);
     color: #fff;
 }
 
 button {
-    padding: 0.7rem 2rem;
+    padding: 0.7rem;
     background-color: #ffcc00;
     border: none;
-    border-radius: 10px;
+    border-radius: 5px;
     color: #1a1a1a;
     font-weight: bold;
     cursor: pointer;
@@ -100,9 +93,29 @@ button:hover {
     display: none;
 }
 
-footer {
+.content-section {
     background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(5px);
+}
+
+.post-list, .community-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.post, .community-post {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+footer {
+    background-color: #292929;
     padding: 1rem;
     text-align: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
 }
