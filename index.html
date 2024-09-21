@@ -1,58 +1,144 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OGCRAFTNET Posts</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <nav>
-        <div class="logo">OGCRAFTNET</div>
-        <div class="nav-links">
-            <a href="#" id="logout" style="display: none;">Logout</a>
-        </div>
-    </nav>
+document.addEventListener('DOMContentLoaded', () => {
+    const loginSection = document.getElementById('loginSection');
+    const uploadSection = document.getElementById('uploadSection');
+    const reelsSection = document.getElementById('reelsSection');
+    const communitySection = document.getElementById('communitySection');
+    const loginForm = document.getElementById('loginForm');
+    const postForm = document.getElementById('postForm');
+    const postContent = document.getElementById('postContent');
+    const mediaInput = document.getElementById('mediaInput');
+    const postList = document.getElementById('post-list');
+    const communityList = document.getElementById('community-list');
+    const logoutLink = document.getElementById('logout');
+    const loadingBar = document.getElementById('loadingBar');
 
-    <div class="tabs">
-        <button class="tab" id="uploadTab">Upload</button>
-        <button class="tab" id="reelsTab">Reels</button>
-        <button class="tab" id="communityTab">Community Posts</button>
-    </div>
+    // Posts aus localStorage laden
+    let posts = JSON.parse(localStorage.getItem('posts')) || []; // Reels (Videos)
+    let communityPosts = JSON.parse(localStorage.getItem('communityPosts')) || []; // Community Posts (Texte und Audios)
 
-    <section class="content" id="loginSection">
-        <h2>Login</h2>
-        <form id="loginForm">
-            <input type="text" id="loginUsername" placeholder="Benutzername" required>
-            <input type="password" id="loginPassword" placeholder="Passwort" required>
-            <button type="submit">Login</button>
-        </form>
-    </section>
+    // Login
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const username = document.getElementById('loginUsername').value;
+        const password = document.getElementById('loginPassword').value;
 
-    <section class="content" id="uploadSection" style="display: none;">
-        <h2>Upload</h2>
-        <form id="postForm">
-            <input type="file" id="mediaInput" accept="video/mp4,audio/mp3" required>
-            <textarea id="postContent" placeholder="Was möchtest du posten?" required></textarea>
-            <button type="submit">Posten</button>
-        </form>
-        <div id="loadingBar" class="loading-bar" style="display: none;"></div>
-    </section>
+        localStorage.setItem('username', username);
+        localStorage.setItem('password', password);
 
-    <section class="content" id="reelsSection" style="display: none;">
-        <h2>Reels</h2>
-        <div id="post-list" class="post-list"></div>
-    </section>
+        loginSection.style.display = 'none';
+        uploadSection.style.display = 'block';
+        document.getElementById('uploadTab').click();
+        logoutLink.style.display = 'block';
+    });
 
-    <section class="content" id="communitySection" style="display: none;">
-        <h2>Community Posts</h2>
-        <div id="community-list" class="community-list"></div>
-    </section>
+    // Logout
+    logoutLink.addEventListener('click', () => {
+        localStorage.removeItem('username');
+        localStorage.removeItem('password');
+        loginSection.style.display = 'block';
+        uploadSection.style.display = 'none';
+        logoutLink.style.display = 'none';
+    });
 
-    <footer>
-        <p>&copy; 2024 OGCRAFTNET Posts</p>
-    </footer>
+    // Tab-Navigation
+    document.getElementById('uploadTab').addEventListener('click', () => {
+        uploadSection.style.display = 'block';
+        reelsSection.style.display = 'none';
+        communitySection.style.display = 'none';
+    });
 
-    <script src="script.js"></script>
-</body>
-</html>
+    document.getElementById('reelsTab').addEventListener('click', () => {
+        uploadSection.style.display = 'none';
+        reelsSection.style.display = 'block';
+        communitySection.style.display = 'none';
+        displayReels();
+    });
+
+    document.getElementById('communityTab').addEventListener('click', () => {
+        uploadSection.style.display = 'none';
+        reelsSection.style.display = 'none';
+        communitySection.style.display = 'block';
+        displayCommunityPosts();
+    });
+
+    // Handle Posten
+    postForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const content = postContent.value.trim();
+        const mediaFile = mediaInput.files[0];
+
+        loadingBar.style.display = 'block'; // Ladeanzeige zeigen
+
+        setTimeout(() => { // Simuliere Upload-Verzögerung
+            const post = { content, mediaURL: null, type: null };
+
+            if (mediaFile) {
+                post.mediaURL = URL.createObjectURL(mediaFile);
+                post.type = mediaFile.type;
+            }
+
+            // Speichern in den entsprechenden Arrays
+            if (post.type === "video/mp4") {
+                posts.push(post);
+                localStorage.setItem('posts', JSON.stringify(posts)); // In localStorage speichern
+            } else if (post.type === "audio/mp3" || content) {
+                communityPosts.push(post);
+                localStorage.setItem('communityPosts', JSON.stringify(communityPosts)); // In localStorage speichern
+            }
+
+            // Eingabefelder leeren
+            postContent.value = '';
+            mediaInput.value = '';
+            loadingBar.style.display = 'none'; // Ladeanzeige verstecken
+
+            // Zeige die entsprechenden Posts
+            if (post.type === "video/mp4") {
+                displayReels();
+            } else if (post.type === "audio/mp3" || content) {
+                displayCommunityPosts();
+            }
+        }, 2000); // Simulierte Upload-Zeit (2 Sekunden)
+    });
+
+    function displayReels() {
+        postList.innerHTML = ''; // Alte Posts löschen
+        posts.forEach(post => {
+            const newPost = document.createElement('div');
+            newPost.classList.add('post');
+            newPost.innerHTML = `
+                <p><strong>${localStorage.getItem('username')}</strong></p>
+                <video controls>
+                    <source src="${post.mediaURL}" type="video/mp4">
+                    Dein Browser unterstützt das Video-Tag nicht.
+                </video>
+                <p>${post.content}</p>
+            `;
+            postList.appendChild(newPost);
+        });
+    }
+
+    function displayCommunityPosts() {
+        communityList.innerHTML = ''; // Alte Community Posts löschen
+        communityPosts.forEach(post => {
+            const newPost = document.createElement('div');
+            newPost.classList.add('post');
+            if (post.mediaURL) {
+                newPost.innerHTML = `
+                    <p><strong>${localStorage.getItem('username')}</strong></p>
+                    <audio controls>
+                        <source src="${post.mediaURL}" type="audio/mp3">
+                        Dein Browser unterstützt das Audio-Tag nicht.
+                    </audio>
+                    <p>${post.content}</p>
+                `;
+            } else {
+                newPost.innerHTML = `
+                    <p><strong>${localStorage.getItem('username')}</strong></p>
+                    <p>${post.content}</p>
+                `;
+            }
+            communityList.appendChild(newPost);
+        });
+    }
+});
