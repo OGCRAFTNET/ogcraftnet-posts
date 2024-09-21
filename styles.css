@@ -31,17 +31,16 @@ nav {
     gap: 1rem;
 }
 
-button {
-    background-color: #ffcc00;
-    border: none;
-    border-radius: 50px;
+a {
+    text-decoration: none;
+    color: #fff;
     padding: 0.5rem 1rem;
-    cursor: pointer;
+    border-radius: 50px;
     transition: background-color 0.3s;
 }
 
-button:hover {
-    background-color: #e6b800;
+a:hover {
+    background-color: #ffcc00;
 }
 
 h2 {
@@ -61,6 +60,15 @@ input[type="text"], input[type="password"], textarea, input[type="file"] {
 
 button {
     padding: 0.7rem 2rem;
+    background-color: #ffcc00;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #e6b800;
 }
 
 .loading-bar {
