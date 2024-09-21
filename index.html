@@ -4,57 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OGCRAFTNET Posts</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js"></script>
-    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">OGCRAFTNET</div>
-            <div class="nav-links">
-                <a href="#" id="uploadTab">Upload</a>
-                <a href="#" id="reelsTab">Reels</a>
-                <a href="#" id="communityTab">Community</a>
-                <a href="#" id="logout" style="display: none;">Logout</a>
-            </div>
-        </nav>
-    </header>
+    <nav>
+        <div class="logo">OGCRAFTNET</div>
+        <div class="nav-links">
+            <a href="#" id="logout" style="display: none;">Logout</a>
+        </div>
+    </nav>
 
-    <main>
-        <section id="loginSection" class="form-section">
-            <form id="loginForm">
-                <h2>Einloggen</h2>
-                <input type="text" id="loginUsername" placeholder="Benutzername" required>
-                <input type="password" id="loginPassword" placeholder="Passwort" required>
-                <button type="submit">Einloggen</button>
-            </form>
-        </section>
+    <div class="tabs">
+        <button class="tab" id="uploadTab">Upload</button>
+        <button class="tab" id="reelsTab">Reels</button>
+        <button class="tab" id="communityTab">Community Posts</button>
+    </div>
 
-        <section id="uploadSection" class="form-section" style="display: none;">
-            <form id="postForm">
-                <h2>Neuen Post erstellen</h2>
-                <textarea id="postContent" placeholder="Was möchtest du teilen?" required></textarea>
-                <input type="file" id="mediaInput" accept="video/mp4,audio/mp3">
-                <button type="submit">Posten</button>
-                <div class="loading-bar" id="loadingBar"></div>
-            </form>
-        </section>
+    <section class="content" id="loginSection">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input type="text" id="loginUsername" placeholder="Benutzername" required>
+            <input type="password" id="loginPassword" placeholder="Passwort" required>
+            <button type="submit">Login</button>
+        </form>
+    </section>
 
-        <section id="reelsSection" class="content-section" style="display: none;">
-            <h2>Reels</h2>
-            <div class="post-list" id="post-list"></div>
-        </section>
+    <section class="content" id="uploadSection" style="display: none;">
+        <h2>Upload</h2>
+        <form id="postForm">
+            <input type="file" id="mediaInput" accept="video/mp4,audio/mp3" required>
+            <textarea id="postContent" placeholder="Was möchtest du posten?" required></textarea>
+            <button type="submit">Posten</button>
+        </form>
+        <div id="loadingBar" class="loading-bar" style="display: none;"></div>
+    </section>
 
-        <section id="communitySection" class="content-section" style="display: none;">
-            <h2>Community-Posts</h2>
-            <div class="community-list" id="community-list"></div>
-        </section>
-    </main>
+    <section class="content" id="reelsSection" style="display: none;">
+        <h2>Reels</h2>
+        <div id="post-list" class="post-list"></div>
+    </section>
+
+    <section class="content" id="communitySection" style="display: none;">
+        <h2>Community Posts</h2>
+        <div id="community-list" class="community-list"></div>
+    </section>
 
     <footer>
-        <p>© 2024 OGCRAFTNET</p>
+        <p>&copy; 2024 OGCRAFTNET Posts</p>
     </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
