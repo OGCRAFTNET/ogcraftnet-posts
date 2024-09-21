@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OGCRAFTNET Posts</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <div class="logo">OGCRAFTNET</div>
+        <div class="nav-links">
+            <a href="#" id="logout" style="display: none;">Logout</a>
+        </div>
+    </nav>
+
+    <div class="tabs">
+        <button class="tab" id="uploadTab">Upload</button>
+        <button class="tab" id="reelsTab">Reels</button>
+        <button class="tab" id="communityTab">Community Posts</button>
+    </div>
+
+    <section class="content" id="loginSection">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input type="text" id="loginUsername" placeholder="Benutzername" required>
+            <input type="password" id="loginPassword" placeholder="Passwort" required>
+            <button type="submit">Login</button>
+        </form>
+    </section>
+
+    <section class="content" id="uploadSection" style="display: none;">
+        <h2>Upload</h2>
+        <form id="postForm">
+            <input type="file" id="mediaInput" accept="video/mp4,audio/mp3" required>
+            <textarea id="postContent" placeholder="Was möchtest du posten?" required></textarea>
+            <button type="submit">Posten</button>
+        </form>
+        <div id="loadingBar" class="loading-bar" style="display: none;"></div>
+    </section>
+
+    <section class="content" id="reelsSection" style="display: none;">
+        <h2>Reels</h2>
+        <div id="post-list" class="post-list"></div>
+    </section>
+
+    <section class="content" id="communitySection" style="display: none;">
+        <h2>Community Posts</h2>
+        <div id="community-list" class="community-list"></div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 OGCRAFTNET Posts</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
