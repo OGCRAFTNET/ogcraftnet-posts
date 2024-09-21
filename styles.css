@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #181818;
+    background-color: #121212;
     color: #fff;
     display: flex;
     flex-direction: column;
@@ -19,16 +19,17 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
 }
 
 .logo {
     font-size: 2rem;
+    font-weight: bold;
 }
 
 .nav-links {
     display: flex;
-    gap: 1rem;
+    gap: 1.5rem;
 }
 
 a {
@@ -40,7 +41,7 @@ a {
 }
 
 a:hover {
-    background-color: #ffcc00;
+    background-color: rgba(255, 204, 0, 0.2);
 }
 
 h2 {
@@ -76,6 +77,33 @@ button:hover {
     height: 5px;
     background-color: #ffcc00;
     display: none;
+}
+
+.content-section {
+    margin: 2rem 0;
+}
+
+.post {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+.post video, .post audio {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.delete-button {
+    background-color: red;
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    float: right;
 }
 
 footer {
