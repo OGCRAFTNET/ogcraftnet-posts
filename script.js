@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayReels() {
         postList.innerHTML = '';
-        posts.forEach(post => {
+        posts.forEach((post, index) => {
             const newPost = document.createElement('div');
             newPost.classList.add('post');
             newPost.innerHTML = `
@@ -109,14 +109,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     Dein Browser unterstützt das Video-Tag nicht.
                 </video>
                 <p>${post.content}</p>
+                <button class="delete-button" data-index="${index}">Löschen</button>
             `;
             postList.appendChild(newPost);
         });
+        attachDeleteListeners();
     }
 
     function displayCommunityPosts() {
         communityList.innerHTML = '';
-        communityPosts.forEach(post => {
+        communityPosts.forEach((post, index) => {
             const newPost = document.createElement('div');
             newPost.classList.add('post');
             if (post.mediaURL) {
@@ -127,14 +129,35 @@ document.addEventListener('DOMContentLoaded', () => {
                         Dein Browser unterstützt das Audio-Tag nicht.
                     </audio>
                     <p>${post.content}</p>
+                    <button class="delete-button" data-index="${index}">Löschen</button>
                 `;
             } else {
                 newPost.innerHTML = `
                     <p><strong>${localStorage.getItem('username')}</strong></p>
                     <p>${post.content}</p>
+                    <button class="delete-button" data-index="${index}">Löschen</button>
                 `;
             }
             communityList.appendChild(newPost);
+        });
+        attachDeleteListeners();
+    }
+
+    function attachDeleteListeners() {
+        const deleteButtons = document.querySelectorAll('.delete-button');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const index = e.target.getAttribute('data-index');
+                if (postList.contains(e.target.parentElement)) {
+                    posts.splice(index, 1);
+                    localStorage.setItem('posts', JSON.stringify(posts));
+                    displayReels();
+                } else {
+                    communityPosts.splice(index, 1);
+                    localStorage.setItem('communityPosts', JSON.stringify(communityPosts));
+                    displayCommunityPosts();
+                }
+            });
         });
     }
 });
