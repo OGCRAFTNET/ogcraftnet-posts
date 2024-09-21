@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let posts = JSON.parse(localStorage.getItem('posts')) || [];
     let communityPosts = JSON.parse(localStorage.getItem('communityPosts')) || [];
 
+    // Login
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const username = document.getElementById('loginUsername').value;
@@ -29,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         logoutLink.style.display = 'block';
     });
 
+    // Logout
     logoutLink.addEventListener('click', () => {
         localStorage.removeItem('username');
         localStorage.removeItem('password');
@@ -37,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         logoutLink.style.display = 'none';
     });
 
+    // Tab-Navigation
     document.getElementById('uploadTab').addEventListener('click', () => {
         uploadSection.style.display = 'block';
         reelsSection.style.display = 'none';
@@ -57,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         displayCommunityPosts();
     });
 
+    // Handle Posten
     postForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
